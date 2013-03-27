@@ -1,0 +1,95 @@
+ * Copyright (c) 2010 Andreas Haas, Stephanie Stroka
+ *
+ * http://www.cs.uni-salzburg.at/~ahaas
+ * andreas.haas@sbg.ac.at
+ *
+ * http://www.cs.uni-salzburg.at/~sstroka
+ * stephanie.stroka@sbg.ac.at
+ * 
+ * University Salzburg, www.uni-salzburg.at
+ * Department of Computer Sciences, cs.uni-salzburg.at
+ *
+ * 
+ * This file is licensed to You under the Eclipse Public License (EPL); You may
+ * not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
+ * 
+ * http://www.opensource.org/licenses/eclipse-1.0.html
+ 
+Short-term Memory for Self-collecting Mutators
+-----------------------------------------------
+We propose a new memory model called short-term memory for managing
+short-living objects on the heap.  In contrast to the traditional
+persistent memory model for heap management, objects in short-term
+memory expire after a finite amount of time, which makes deallocation
+unnecessary.  Instead, expiration of objects may be extended, if
+necessary, by refreshing.  We have developed a concurrent,
+incremental, and non-moving implementation of short-term memory for
+explicit refreshing called self-collecting mutators that is based on
+programmer-controlled time and integrated into state-of-the-art
+runtimes of three programming languages: C, Java, and Go.  All memory
+management operations are lock-free and run in constant time modulo
+the underlying allocators.  Our implementation does not require any
+additional heap management threads, hence the name.  Expired objects
+may be collected anywhere between one at a time for maximal
+incrementality and all at once for maximal throughput and minimal
+memory consumption.  The integrated systems are heap management
+hybrids with persistent memory as default and short-term memory as
+option.  Our approach is fully backwards compatible.  Legacy code runs
+without any modifications with negligible runtime overhead and
+constant per-object space overhead.  Legacy code can be modified to
+take advantage of short-term memory by having some but not all objects
+allocated in short-term memory and managed by explicit refreshing.  We
+study single- and multi-threaded use cases in all three languages
+macro-benchmarking C and Java and micro-benchmarking Go.  Our results
+show that using short-term memory (1)~simplifies heap management in a
+state-of-the-art H.264 encoder written in C without additional time
+and minor space overhead, and (2)~improves, at the expense of safety,
+memory management throughput, latency, and space consumption by
+reducing the number of garbage collection runs, often even to zero,
+for a number of Java and Go programs.
+
+More information about short-term memory and self-collecting mutators
+can be found at our project webpage at
+http://tiptoe.cs.uni-salzburg.at/short-term-memory/
+and in the technical report available at
+http://www.cosy.sbg.ac.at/research/tr/2010-06_Aigner_Haas_Kirsch_Sokolova.pdf
+
+A C implementation of self-collecting mutators is available at
+http://tiptoe.cs.uni-salzburg.at/downloads/libscm-0.3.tar.gz
+
+How to build self-collecting mutators
+--------------------
+Both Jikes RVM 3.1.0 and GNU Classpath 0.97.2 are patched:
+
+$ patch -p1 -d $JIKES_RVM < scm.patch
+
+Note that the source code of GNU Classpath has to exist before it is patched. 
+It can be obtained by executing
+
+$ant check-components-properties
+
+GNU Classpath may be compiled seperately:
+
+$ ant -f build/components/classpath.xml
+
+To build the patched RVM using self-collecting mutators, use one of the
+following configurations:
+
+FullAdaptiveSCMHybrid and BaseBaseSCMHybrid
+
+How to use self-collecting mutators
+-----------------------------------
+The file TestProgram.java contains a code example which uses self-collecting
+mutators. The java compiler has to use the patched GNU Classpath library
+as class library, e.g.
+
+$ javac -bootclasspath $JIKES_RVM/components/classpath/97.2p8/$HOST.NAME/lib/classpath.jar TestProgram.java
+
+Additional Information
+-----------------------
+Take a look at our project webpage at
+http://tiptoe.cs.uni-salzburg.at/short-term-memory/ 
+
+JikesRVM may be found at 
+http://www.jikesrvm.org

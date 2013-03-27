@@ -1,0 +1,81 @@
+The Go runtime may be distributed under the terms that can be found in 
+``LICENSE-go''. 
+
+All modifications that have been made are licensed under the GPLv2.
+
+Copyright (c) 2010 Martin Aigner, Andreas Haas, Michael Lippautz
+  http://www.cs.uni-salzburg.at/~maigner
+  http://www.cs.uni-salzburg.at/~ahaas
+  http://www.cs.uni-salzburg.at/~mlippautz
+
+University Salzburg, www.uni-salzburg.at
+Department of Computer Science, cs.uni-salzburg.at
+
+Short-term Memory for Self-collecting Mutators
+-----------------------------------------------
+We propose a new memory model called short-term memory for managing
+short-living objects on the heap.  In contrast to the traditional
+persistent memory model for heap management, objects in short-term
+memory expire after a finite amount of time, which makes deallocation
+unnecessary.  Instead, expiration of objects may be extended, if
+necessary, by refreshing.  We have developed a concurrent,
+incremental, and non-moving implementation of short-term memory for
+explicit refreshing called self-collecting mutators that is based on
+programmer-controlled time and integrated into state-of-the-art
+runtimes of three programming languages: C, Java, and Go.  All memory
+management operations are lock-free and run in constant time modulo
+the underlying allocators.  Our implementation does not require any
+additional heap management threads, hence the name.  Expired objects
+may be collected anywhere between one at a time for maximal
+incrementality and all at once for maximal throughput and minimal
+memory consumption.  The integrated systems are heap management
+hybrids with persistent memory as default and short-term memory as
+option.  Our approach is fully backwards compatible.  Legacy code runs
+without any modifications with negligible runtime overhead and
+constant per-object space overhead.  Legacy code can be modified to
+take advantage of short-term memory by having some but not all objects
+allocated in short-term memory and managed by explicit refreshing.  We
+study single- and multi-threaded use cases in all three languages
+macro-benchmarking C and Java and micro-benchmarking Go.  Our results
+show that using short-term memory (1)~simplifies heap management in a
+state-of-the-art H.264 encoder written in C without additional time
+and minor space overhead, and (2)~improves, at the expense of safety,
+memory management throughput, latency, and space consumption by
+reducing the number of garbage collection runs, often even to zero,
+for a number of Java and Go programs.
+
+More information about short-term memory and self-collecting mutators
+can be found at our project webpage at
+http://tiptoe.cs.uni-salzburg.at/short-term-memory/
+and in the technical report available at
+http://www.cosy.sbg.ac.at/research/tr/2010-06_Aigner_Haas_Kirsch_Sokolova.pdf
+
+A C implementation of self-collecting mutators is available at
+http://tiptoe.cs.uni-salzburg.at/downloads/libscm-0.3.tar.gz
+
+For the API have a look at ``stm.man''. The file can be viewed using nroff.
+
+For further information on stm have a look at 
+http://tiptoe.cs.uni-salzburg.at/short-term-memory/
+
+Compatiblity
+------------
+
+This runtime is compatible with the Go release tagged as ``release.2010-11-02''.
+Currently the runtime provides support for 64bit Linux.
+
+Install
+-------
+
+Install the Go framework using the instructions from http://golang.org.
+
+To install the short-term memory system do (after checking that $GOROOT is 
+the valid Go root directory):
+
+$ ./install.sh
+
+This script moves the current runtime to runtime-<timestamp> and copies the stm 
+enabled one into the tree.
+
+
+

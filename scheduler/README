@@ -1,0 +1,39 @@
+Tiptoe Scheduler Prototype Release
+=======================================================================
+
+This package contains the source code of tiptoes' scheduler prototype
+implementation.
+==================================
+Directory tree:
+./include:  	all header files
+./include/asm: 	a symbolic link set to the correct architecture
+		(asm-i386, or asm-x86-64)
+./include/asm-i386: 	hardware dependent header files for IA32
+./include/asm-x86-64:	hardware dependent header files for AMD64
+./include/utils:	header files of used utilities
+./include/queues:	header files of different queues plugins
+
+./src:		all source code files
+./src/queues:	different queue implementations
+./src/utils:	utilities implementation files (e.g. bitmaps)
+
+./data:		different workload files for running the simulation
+==================================
+Compiling:
+A makefile is supplied in the ./src/ directory.  Before starting
+make set the symbolic link ./include/asm to correct architecture
+of the machine.  "make" compiles all plugins and builds an
+executable for each.  Possible compile flags are documented in the
+supplied makefile.
+==================================
+Running:
+All executables build during the previous step are simulations,
+which expect the number of scheduler calls the simulation will run
+and a workload description file as input.  By default the scheduler
+actions are displayed via a simple user interface (ncurses). Examples
+workload files with various number of processes are include in the
+./data directory
+==================================
+Authors:
+	Silviu Craciunas (scraciunas@cs . uni-salzburg . at)
+	Harald Roeck (hroeck@cs . uni-salzburg . at)

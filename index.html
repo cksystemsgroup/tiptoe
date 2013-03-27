@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="tiptoe.cs.uni-salzburg.at" lang="en">
+<head>
+  <title>The Tiptoe Project: Homepage</title>
+  <meta content="en-us" http-equiv="content-language">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <meta content="Robert Staudinger" name="author">
+  <meta content="Silviu Craciunas; Bernhard Kast" name="design">
+  <meta content="Tiptoe Project Homepage" name="description">
+  <meta content="real-time concurrent operating-system" name="keywords">
+  <link href="screen.css" media="screen,projection" type="text/css" rel="stylesheet">
+  <!--[if lt ie 7]>
+    <link rel="stylesheet" type="text/css" media="screen,projection" href="ie-win.css">
+  <![endif]-->
+  <style type="text/css">
+    p {
+      margin-top: 0px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0);" id="bhome" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<div id="topnav">
+  <ul>
+    <li><a href="http://www.cs.uni-salzburg.at/~ck" title="Computational Systems Group">Computational Systems Group</a></li>
+  </ul>
+</div>
+<div id="header">
+  <h1>The Tiptoe Project: Real-Time Operating System Research</h1>
+</div>
+<div id="navigation">
+<ul>
+  <li id="lhome"><a href="index.html" title="Home">Home</a></li>
+  <li id="ldesign"><a href="design/index.html" title="Home">Design</a></li>
+  <li id="lprogramming-model"><a href="programming-model/index.html" title="Home">Programming Model</a></li>
+  <li id="lscheduler"><a href="scheduler/index.html" title="Home">Scheduler</a></li>
+  <li id="lmemory-management"><a href="memory-management/index.html" title="Memory-Management">Memory Management</a></li>
+  <li id="lpublications"><a href="publications/index.html" title="Publications">Publications</a></li>
+  <li id="ldownloads"><a href="downloads/index.html" title="Downloads">Downloads</a></li>
+</ul>
+</div>
+<div id="wrapper">
+<div id="content-wrapper">
+<div id="content">
+<br><br>
+<p><strong>Abstract</strong></p>
+<p> 
+The Tiptoe project is an ongoing effort to develop a compositional
+real-time operating system.  
+
+Tiptoe is meant to be a microkernel-based system that supports
+executing temporally isolated operating system processes as well as
+system and process VMs.  
+
+Tiptoe
+processes are meant to be implemented in the <a href="programming-model/index.html">workload-oriented programming model</a>,
+which abstracts concurrency-dependent process execution times into
+concurrency-independent process response times, even on the level of
+individual process actions such as system and procedure calls.  As
+foundation for workload-oriented programming, we have already
+developed an <a href="scheduler/index.html">EDF-based scheduler</a> along with a prototypical
+implementation that can effectively manage in constant time any number
+of processes up to available memory while maintaining throughput and
+latency of individual process actions within a bounded range.  Another
+important part of Tiptoe is the real-time memory management system
+called <a href="compact-fit/index.html">Compact-fit</a>, which will be used by user processes running on
+Tiptoe but also by the Tiptoe kernel itself.  
+
+
+Prototypical standalone
+implementations of the EDF-based scheduler and the real-time memory
+management system are available in the <a href="downloads/index.html">download</a> section.
+
+</p>
+<br>
+<p><strong>Team</strong></p>
+<ul style="margin-top: 0px; padding-top: 0px">
+  <li><a href="http://www.cs.uni-salzburg.at/~scraciunas">Silviu Craciunas</a>: Scheduler, programming model.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~ahaas">Andreas Haas</a>: Memory management.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~ck">Christoph Kirsch</a>: Working group lead, advising professor.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~hpayer">Hannes Payer</a>: Memory management.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~hroeck">Harald R&ouml;ck</a>: Scheduler, initial implementation of hardware-dependent kernel parts, low-level memory management, I/O, libc.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~anas">Ana Sokolova</a>: Scheduler, Memory management.</li>
+</ul>
+<p><strong>Past Members</strong></p>
+<ul style="margin-top: 0px; padding-top: 0px">
+  <li><a href="http://www.cs.uni-salzburg.at/~lbrunauer">Leonhard Brunauer</a>: Userland infrastructure prototypes, libc enhancements, infrastructure.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~hstadler">Horst Stadler</a>: I/O Subsystem.</li>
+  <li><a href="http://www.cs.uni-salzburg.at/~rstaudinger">Robert Staudinger</a>: Programming abstractions, kernel, userland infrastructure, build system.</li>
+</ul>
+<p><strong>Funding</strong></p>
+<p>This project is funded by the <a href="http://www.fwf.ac.at/">Austrian Science Fund</a>, project number P18913.</p>
+
+<br><br>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="logo">
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3827654-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

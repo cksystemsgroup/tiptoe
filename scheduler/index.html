@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="tiptoe.cs.uni-salzburg.at" lang="en">
+<head>
+  <title>The Tiptoe Project: Scheduler</title>
+  <meta content="en-us" http-equiv="content-language">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <meta content="Hannes Payer" name="author">
+  <meta content="Silviu Craciunas; Bernhard Kast" name="design">
+  <meta content="Tiptoe Project Scheduler" name="description">
+  <meta content="real-time concurrent operating-system" name="keywords">
+  <link href="../screen.css" media="screen,projection" type="text/css" rel="stylesheet">
+  <!--[if lt ie 7]>
+    <link rel="stylesheet" type="text/css" media="screen,projection" href="../ie-win.css">
+  <![endif]-->
+  <style type="text/css">
+    p {
+      margin-top: 0px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0);" id="bscheduler" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<div id="topnav">
+  <ul>
+    <li><a href="http://www.cs.uni-salzburg.at/~ck" title="Computational Systems Group">Computational Systems Group</a></li>
+  </ul>
+</div>
+<div id="header">
+  <h1>The Tiptoe Project: Real-Time Operating System Research</h1>
+</div>
+<div id="navigation">
+<ul>
+  <li id="lhome"><a href="../index.html" title="Home">Home</a></li>
+  <li id="ldesign"><a href="../design/index.html" title="Home">Design</a></li>
+  <li id="lprogramming-model"><a href="../programming-model/index.html" title="Home">Programming Model</a></li>
+  <li id="lscheduler"><a href="../scheduler/index.html" title="Home">Scheduler</a></li>
+  <li id="lmemory-management"><a href="../memory-management/index.html" title="Memory-Management">Memory Management</a></li>
+  <li id="lpublications"><a href="../publications/index.html" title="Publications">Publications</a></li>
+  <li id="ldownloads"><a href="../downloads/index.html" title="Downloads">Downloads</a></li>
+</ul>
+</div>
+<div id="wrapper">
+<div id="content-wrapper">
+<div id="content">
+<a href="index.html#scheduler">VBS Scheduler with zero overhead</a> | <a href="index.html#overhead">VBS Scheduler with non-zero overhead</a>
+<br><br>
+<a name="scheduler"></a>
+<p><strong>VBS Scheduler with zero overhead</strong></p>
+<p style="text-align:justify">
+We introduce and use variable-bandwidth servers (VBS) for scheduling and executing processes under programmable temporal isolation. A VBS is an extension of a constant-bandwidth server where throughput and latency of process execution can not only be controlled to remain constant across different competing workloads but also to vary in time as long as the resulting bandwidth stays below a given bandwidth cap.  Switching to different periods allows to trade off scheduling overhead and temporal isolation at runtime. Smaller periods and thus higher sampling frequencies better isolate servers because their response times for executing a given piece of code are better maintained across larger sets of server workloads, at the expense of higher administrative overhead through more scheduler invocations.
+
+<br>
+
+We have designed and implemented a VBS-based EDF-style constant-time scheduling algorithm, a constant-time admission test, and four alternative queue management plugins which
+influence the scheduling algorithm’s overall temporal and spatial complexity. The schedulability test and scheduling algorithm for workload-oriented programming have a focus on reducing runtime overhead and improving predictability by trading off schedulability precision (test) as well as system utilization (algorithm) for less time complexity of managing process admission and more predictable administrative overhead of making scheduling decisions, respectively.  In other words, the schedulability test may reject some schedulable processes but may be performed fast (in constant time with a fixed number of resources) and the scheduling algorithm may interrupt the system more frequently but does so predictably often and makes scheduling decisions fast (in constant time with a fixed timeline but for any number of processes).
+
+
+<br>
+<b>Implementation</b>
+<br>
+
+We have implemented our scheduling algorithm and benchmarked it on synthetic workloads. The scheduling algorithm essentially manages a deadline-ordered set of released processes (ready queue) and a release-time-ordered set of delayed processes (blocked queue). Currently our implementation supports doubly-linked lists, time-slot arrays of FIFO queues, and a time-slot matrix of FIFO queues, and an alternative FIFO matrix representation using B+ trees that reduce memory usage.
+The algorithm's time complexity is dominated by the queue operations' time complexities since the algorithm itself is loop-free and therefore runs in constant time.
+
+<br>
+<b>Results</b>
+<br>
+Figure 1 shows the standard deviation of the execution time of the scheduler with different number of processes and Figure 2 shows the memory usage for the implemented plugins in terms of time instants. 
+<br>
+<center>
+<table><tr><td>
+<center><img height="250" width="338" alt="Figure 1" src="stddev_noopt.jpg"><br>
+Figure 1: Standard deviation</center>
+</td><td>
+<center><img height="250" width="380" alt="Figure 2" src="complexity3d.jpg"><br>
+Figure 2: Memory usage</center>
+</td></tr></table></center>
+
+
+<br>
+<a name="overhead"></a>
+<b>VBS Scheduler with non-zero overhead</b>
+<br>
+An important aspect of the scheduler is the scheduling overhead which has to be accounted for in order to guarantee the temporal properties of the system.
+
+We propose two complementary methods to account for scheduler overhead in the schedulability analysis of Variable Bandwidth Servers (VBS).  
+We first determine an upper bound on the number of scheduler invocations that may occur during a given amount of time.  This is possible because process release and suspend times are known in VBS.  Given the number of preemptions in a period of a VBS process, we show that there are two complementary methods to account for scheduler overhead, either by decreasing the speed at which processes run to maintain CPU utilization (called response accounting), or by increasing CPU utilization to maintain the speed at which processes run (called utilization accounting).  Response accounting decreases the net server bandwidth available to a process by dedicating some of its bandwidth to the scheduler.  Utilization accounting increases the server bandwidth to maintain the net bandwidth available to a process.  In other words, with utilization accounting, the bounds on response times
+are maintained while CPU utilization is increased whereas, with response accounting, the upper bounds on response times and thus on jitter are increased while utilization is maintained.  Both methods can be combined by handling an arbitrary fraction of the total scheduler overhead with one method and the rest with the other.  We also show, by example, that the fraction may be chosen within server- and process-dependent intervals such that CPU utilization decreases while the response-time bounds and thus the speed at which processes run remain the same, as can be seen in Figure 3.
+
+<center><img  alt="Figure 3" src="overhead.jpg"><br>
+Figure 3: Response time and utilization when the fraction of response accounted overhead varies in [0, 100] 
+using the late strategy</center>
+
+</p>
+
+
+
+<p><a href="../publications/index.html">Publications</a></p>
+
+<p><strong>Contact:</strong> <a href="http://www.cs.uni-salzburg.at/~scraciunas">Silviu Craciunas</a></p>
+
+<p><strong>Download</strong></p>
+<ul style="margin-top: 0px; padding-top: 0px">
+  <li>29 Jul 2008: <a href="../downloads/tiptoe-scheduler-0.2.tar.gz">tiptoe-scheduler-0.2.tar.gz</a>, <a href="README">README</a> (also included in the tarball)</li>
+</ul>
+
+<br><br>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="logo">
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3827654-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

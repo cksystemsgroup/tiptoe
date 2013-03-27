@@ -1,0 +1,181 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="tiptoe.cs.uni-salzburg.at" lang="en">
+<head>
+  <title>The Tiptoe Project: Short-Term Memory</title>
+  <meta content="en-us" http-equiv="content-language">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <meta content="Andreas Haas" name="author">
+  <meta content="Silviu Craciunas; Bernhard Kast" name="design">
+  <meta content="Tiptoe Project Short-term Memory" name="description">
+  <meta content="memory-management short-term-memory concurrent" name="keywords">
+  <link href="../screen.css" media="screen,projection" type="text/css" rel="stylesheet">
+  <!--[if lt ie 7]>
+    <link rel="stylesheet" type="text/css" media="screen,projection" href="../ie-win.css">
+  <![endif]-->
+  <style type="text/css">
+    p {
+      margin-top: 0px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0);" id="bmemory-management" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<div id="topnav">
+  <ul>
+    <li><a href="http://www.cs.uni-salzburg.at/~ck" title="Computational Systems Group">Computational Systems Group</a></li>
+  </ul>
+</div>
+<div id="header">
+  <h1>Short-Term Memory</h1>
+</div>
+<div id="navigation">
+<ul>
+  <li id="lhome"><a href="../index.html" title="Home">Home</a></li>
+  <li id="ldesign"><a href="../design/index.html" title="Home">Design</a></li>
+  <li id="lprogramming-model"><a href="../programming-model/index.html" title="Home">Programming Model</a></li>
+  <li id="lscheduler"><a href="../scheduler/index.html" title="Home">Scheduler</a></li>
+  <li id="lmemory-management"><a href="../memory-management/index.html" title="Memory-Management">Memory Management</a></li>
+  <li id="lpublications"><a href="../publications/index.html" title="Publications">Publications</a></li>
+  <li id="ldownloads"><a href="../downloads/index.html" title="Downloads">Downloads</a></li>
+</ul>
+</div>
+
+<div id="navigation2">
+<ul>
+  <li ><a href="../compact-fit/index.html">Compact Fit</a></li>
+  <li><a href="index.html">Short-Term Memory</a></li>
+    <br>
+  </li>
+</ul>
+</div>
+
+<div id="wrapper">
+<div id="content-wrapper">
+<div id="content">
+<br><br>
+<h1><a name="Short-term-Memory"></a>Short-Term Memory</h1>
+
+<p><strong>Abstract</strong></p>
+<p style="text-align:justify">
+
+We propose a new memory model called short-term memory for managing
+short-living objects on the heap.  In contrast to the traditional
+persistent memory model for heap management, objects in short-term
+memory expire after a finite amount of time, which makes deallocation
+unnecessary.  Instead, expiration of objects may be extended, if
+necessary, by refreshing.  We have developed a concurrent,
+incremental, and non-moving implementation of short-term memory for
+explicit refreshing called self-collecting mutators that is based on
+programmer-controlled time and integrated into state-of-the-art
+runtimes of three programming languages: C, Java, and Go.  All memory
+management operations are lock-free and run in constant time modulo
+the underlying allocators.  Our implementation does not require any
+additional heap management threads, hence the name.  Expired objects
+may be collected anywhere between one at a time for maximal
+incrementality and all at once for maximal throughput and minimal
+memory consumption.  The integrated systems are heap management
+hybrids with persistent memory as default and short-term memory as
+option.  Our approach is fully backwards compatible.  Legacy code runs
+without any modifications with negligible runtime overhead and
+constant per-object space overhead.  Legacy code can be modified to
+take advantage of short-term memory by having some but not all objects
+allocated in short-term memory and managed by explicit refreshing.  We
+study single- and multi-threaded use cases in all three languages
+macro-benchmarking C and Java and micro-benchmarking Go.  Our results
+show that using short-term memory (1) simplifies heap management in a
+state-of-the-art H.264 encoder written in C without additional time
+and minor space overhead, and (2) improves, at the expense of safety,
+memory management throughput, latency, and space consumption by
+reducing the number of garbage collection runs, often even to zero,
+for a number of Java and Go programs.
+More information can be found in the
+<a href="http://www.cs.uni-salzburg.at/~ck/content/publications/reports/SBG10-ShortTermMemoryRevised.pdf">technical report</a>
+and the
+<a href="http://www.cs.uni-salzburg.at/~ck/content/publications/conferences/ISMM11-ShortTermMemory.pdf">ISMM 2011 paper</a>.
+
+</p>
+
+<center>
+<table>
+<tr>
+<td style="padding:35px" width="800">
+<p>
+<center><embed type="image/svg+xml" src="short-term-memory.svg" width="600" height="250" border="0"/><br>
+Figure 1 object lifetime in short-term memory: every object has an expiration date. 
+The expiration date of an object can be extended by refreshing</center>
+</p>
+</td>
+</tr>
+<tr>
+<td style="padding:35px" width="800">
+<p>
+<center>
+<embed type="image/svg+xml" src="mpg123_lazy_vs_eager.svg" width="550" height="377" border="1"/>
+<embed type="image/svg+xml" src="mpg123_zoom.svg" width="550" height="377" border="1"/>
+
+<!--<img src="Chart_Mpg123_Eager_Memory_Consumption.png" width="600" border="0"/>-->
+<br>
+Figure 2 memory consumption over time: The C-implementation of self-collecting mutators vs. 
+the ptmalloc2 memory allocator executing the <a href="http://www.mpg123.de">mpg123 mp3 converter</a>.
+Memory consumption is measured before and after memory allocations. The vertical lines indicate time advance</center>
+</p>
+</td>
+</tr>
+<tr>
+<td style="padding:35px" width="800">
+<p>
+<center><img src="Runtime_MonteCarlo.png" border="0"/><br>
+Figure 3 total runtime benchmark: The Java-implementation of self-collecting mutators vs. the mark-sweep garbage collector and the generational garbage collector of <a href="http://www.jikesrvm.org">Jikes RVM</a></center>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>
+<center>
+<embed type="image/svg+xml" src="Chart_Memory_Latency.svg" width="600" height="465" border="1"/>
+<!--<img src="Chart_Memory_Latency.png" border="0"/>-->
+<br/><hr/><br/>
+<img src="./tree-space-latency.jpeg" width="600" border="0"/>
+<br/>
+Figure 4 and 5 latency and memory consumption: The Java- and Go-implementation of self-collecting mutators vs. the mark-sweep garbage collector and the generational garbage collector of <a href="http://www.jikesrvm.org">Jikes RVM</a>, and the mark-sweep garbage collector of <a href="http://www.golang.com">Go</a> 
+</center>
+</p>
+</td>
+</tr>
+</table>
+</center>
+
+<p><a href="../publications/index.html">Publications</a></p>
+
+
+<p><strong>Contact:</strong> <a href="http://www.cs.uni-salzburg.at/~ahaas">Andreas Haas</a></p>
+
+
+<p><strong>Download</strong></p>
+<ul style="margin-top: 0px; padding-top: 0px">
+  <li>22 Feb 2012: C implementation with support for regions: <a href="../downloads/libscm-0.5.tar.gz">libscm-0.5.tar.gz</a>, <a href="./README_LIBSCM_05">README</a> (also included in the tarball)</li>
+  <li>23 Nov 2010: Java implementation: <a href="../downloads/scm_java-0.2.tar.gz">scm_java-0.2.tar.gz</a>, <a href="./README_JAVA_02">README</a> (also included in the tarball)</li>
+  <li>23 Nov 2010: Go implementation: <a href="../downloads/scm_go-0.1.tar.gz">scm_go-0.1.tar.gz</a>, <a href="./README_LIBSCM_03">README</a> (also included in the tarball)</li>
+  <li><a href="../downloads/index.html">View all downloads</a></li>
+</ul>
+
+<br><br>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="logo">
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3827654-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

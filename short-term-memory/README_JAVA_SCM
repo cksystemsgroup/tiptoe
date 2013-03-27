@@ -1,0 +1,94 @@
+ * Copyright (c) 2010 Andreas Haas, Stephanie Stroka
+ *
+ * http://www.cs.uni-salzburg.at/~ahaas
+ * andreas.haas@sbg.ac.at
+ *
+ * http://www.cs.uni-salzburg.at/~sstroka
+ * stephanie.stroka@sbg.ac.at
+ * 
+ * University Salzburg, www.uni-salzburg.at
+ * Department of Computer Sciences, cs.uni-salzburg.at
+ *
+ * 
+ * This file is licensed to You under the Eclipse Public License (EPL); You may
+ * not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
+ * 
+ * http://www.opensource.org/licenses/eclipse-1.0.html
+ 
+Short-term Memory for Self-collecting Mutators
+-----------------------------------------------
+We propose a new memory model, short-term memory, and a
+concurrent algorithm that employs it, called self-collecting mutators.
+In short-term memory objects expire after a ﬁnite amount of time,
+which makes deallocation unnecessary. Self-collecting mutators
+require programmer support to control the time and thereby en-
+able reusing the memory of expired objects. We identify a class
+of programs for which programmer support is easy and correct-
+ness is guaranteed. Self-collecting mutators perform competitively
+with explicitly managed systems and garbage-collected systems, as
+shown by our experimental results on several benchmarks. Unlike
+garbage-collected systems, our system has no pause times, provides
+constant execution time of all operations, independent of the num-
+ber of live objects, and constant memory consumption after a steady
+state has been reached.
+
+More information about short-term memory and self-collecting mutators
+can be found at our project webpage at
+http://tiptoe.cs.uni-salzburg.at/short-term-memory/
+and in the technical report available at
+http://www.cs.uni-salzburg.at/~ck/content/publications/reports/SBG10-ShortTermMemory.pdf
+
+A C implementation of self-collecting mutators is available at
+http://tiptoe.cs.uni-salzburg.at/downloads/libscm-0.1.tar.gz
+
+How to build self-collecting mutators
+--------------------
+Both Jikes RVM 3.1.0 and GNU Classpath 0.97.2 have to be patched:
+
+$ cd $JIKES_RVM
+$ patch -p0 < scm.patch
+
+Note that the source code of GNU Classpath has to exist before it is patched. 
+It can be obtained by executing
+
+$ant check-components-properties
+
+To patch GNU Classpath, execute 
+
+$ patch -p0 < scm_classpath.patch
+
+In any case, GNU Classpath has to be compiled seperately:
+
+$ ant -f build/components/classpath.xml
+
+To build the patched RVM using self-collecting mutators, use one of the
+following configurations:
+
+FullAdaptiveSCM and BaseBaseSCM
+
+How to use self-collecting mutators
+-----------------------------------
+The file TestProgram.java contains a code example which uses self-collecting
+mutators. The java compiler has to use the patched GNU Classpath library
+as class library, e.g.
+
+$ javac -bootclasspath $JIKES_RVM/components/classpath/97.2p8/$HOST.NAME/lib/classpath.jar TestProgram.java
+
+Limitations of the current implementation
+------------------------------------------
+Only memory allocations in classes annotated with @org.csg.UserApplication
+use self-collecting mutators. When classes from the class library are used
+which allocate memory, then also this classes have to be annotated.
+
+We did not annotate classes of Jikes RVM. For evaluations we used the 
+FullAdaptiveSCM configuration with replay compilation and the BaseBaseSCM
+configuration to avoid memory consumption of Jikes.
+
+Additional Information
+-----------------------
+Take a look at our project webpage at
+http://tiptoe.cs.uni-salzburg.at/short-term-memory/
+
+JikesRVM may be found at 
+http://www.jikesrvm.org 

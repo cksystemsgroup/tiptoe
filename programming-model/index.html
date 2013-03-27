@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="tiptoe.cs.uni-salzburg.at" lang="en">
+<head>
+  <title>The Tiptoe Project: Programming Model</title>
+  <meta content="en-us" http-equiv="content-language">
+  <meta content="text/html; charset=utf-8" http-equiv="content-type">
+  <meta content="Hannes Payer" name="author">
+  <meta content="Silviu Craciunas; Bernhard Kast" name="design">
+  <meta content="Tiptoe Project Programming Model" name="description">
+  <meta content="real-time concurrent operating-system" name="keywords">
+  <link href="../screen.css" media="screen,projection" type="text/css" rel="stylesheet">
+  <!--[if lt ie 7]>
+    <link rel="stylesheet" type="text/css" media="screen,projection" href="../ie-win.css">
+  <![endif]-->
+  <style type="text/css">
+    p {
+      margin-top: 0px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body style="color: rgb(0, 0, 0);" id="bprogramming-model" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<div id="topnav">
+  <ul>
+    <li><a href="http://www.cs.uni-salzburg.at/~ck" title="Computational Systems Group">Computational Systems Group</a></li>
+  </ul>
+</div>
+<div id="header">
+  <h1>The Tiptoe Project: Real-Time Operating System Research</h1>
+</div>
+<div id="navigation">
+<ul>
+  <li id="lhome"><a href="../index.html" title="Home">Home</a></li>
+  <li id="ldesign"><a href="../design/index.html" title="Home">Design</a></li>
+  <li id="lprogramming-model"><a href="../programming-model/index.html" title="Home">Programming Model</a></li>
+  <li id="lscheduler"><a href="../scheduler/index.html" title="Home">Scheduler</a></li>
+  <li id="lmemory-management"><a href="../memory-management/index.html" title="Memory-Management">Memory Management</a></li>
+  <li id="lpublications"><a href="../publications/index.html" title="Publications">Publications</a></li>
+  <li id="ldownloads"><a href="../downloads/index.html" title="Downloads">Downloads</a></li>
+</ul>
+</div>
+<div id="wrapper">
+<div id="content-wrapper">
+<div id="content">
+<br><br>
+<p><strong>Abstract</strong></p>
+<p style="text-align:justify">
+
+Real-time software processes typically process quantifiable amounts of data under known temporal application requirements and resource constraints.  Application requirements are, for example, the usually throughput-oriented rates at which video frames in an MPEG encoder must be processed, or the mostly latency-oriented rates at which sensor data in a control system must be handled.  Resource constraints might be the maximum rate at which memory can be allocated or at which data can be written to a harddisk.  Both application requirements and resource constraints in turn can often directly be related to the workload, in particular, the amount of involved data.  For example, a real-time process that compresses video frames usually needs to
+process a given number of frames within some finite response time. Similarly, resource performance may be characterized by the execution time needed to process a given number of frames.  
+<br>
+<br>
+Workload-oriented programming is a design methodology for specifying throughput and latency of real-time software processes on the level of individual process actions. In our process model, we call an invocation of process or system code an action of the invoking process.  An action has an optional workload parameter, which describes the workload involved in
+executing the action. The key programming abstraction is that the workload involved in executing a process action such as a system or procedure call fully determines the action's response time, independently of any previous or concurrent actions. The processes in our model are sequences of such actions. Each action's execution and response time depends only on the workload involved.
+Moreover, each action is assigned a virtual periodic resource, or resource for short, on which it executes, out of a finite set of resources. It can be represented by a pair of a limit
+and a period, also related to resource reserves. We introduce the notion of response-time (RT) functions and execution-time functions (ET) that characterize application requirements and resource constraints, respectively, at the level of individual process actions. Thus, for each action, there are two discrete functions, f<sub>R</sub> and f<sub>E</sub>, which characterize the action's performance in terms of its workload parameter. These functions are linked to the period and limit of the resources which the action uses. 
+The model thus enables sequential and concurrent real-time process composition while maintaining each action's workload-determined real-time behavior.
+<br>
+<br>
+
+<center>
+<table><tr><td>
+<img src="figure1.jpeg" width="598" height="356"><br>
+</td><td>
+<img alt="Figure 2" src="woprog22_old.jpg"><br>
+</td></tr></table></center>
+</center>
+
+</p>
+<br>
+<br>
+<p><a href="../publications/index.html">Publications</a></p>
+
+<p><strong>Contact:</strong> <a href="http://www.cs.uni-salzburg.at/~scraciunas">Silviu Craciunas</a></p>
+
+<br><br>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="logo">
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3827654-2");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
